@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMART MANDYA | Government Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand-logo">
+                <img src="images/karnataka-emblem-mark.jpeg" alt="Karnataka Government emblem" />
+                <div>
+                    <h1>SMART MANDYA</h1>
+                    <p>Gram Panchayat Portal</p>
+                </div>
+            </div>
+
+            <div class="profile-card d-flex align-items-center gap-3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ccircle cx='32' cy='24' r='16' fill='%233b572d'/%3E%3Crect x='16' y='40' width='32' height='18' rx='9' fill='%233b572d'/%3E%3C/svg%3E" alt="Admin" />
+                <div>
+                    <div class="fw-bold">Government Admin</div>
+                    <div class="small text-white-50">Administrator • <span class="online-dot"></span> Online</div>
+                </div>
+            </div>
+
+            <nav>
+                <a href="#dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="applications.html"><i class="fas fa-file-signature"></i> User Applications</a>
+                <a href="#farmers"><i class="fas fa-tractor"></i> Farmer Management</a>
+                <a href="#yojanas"><i class="fas fa-landmark"></i> Scheme (Yojana)</a>
+                <a href="#sms-log"><i class="fas fa-sms"></i> SMS Management</a>
+                <a href="#reports"><i class="fas fa-chart-line"></i> Reports & Analytics</a>
+                <a href="#users"><i class="fas fa-users-cog"></i> User Management</a>
+                <a href="#documents"><i class="fas fa-file-alt"></i> Documents</a>
+                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#help"><i class="fas fa-question-circle"></i> Help Center</a>
+                <a href="#logout" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+
+        </aside>
+
+        <div class="main-area" id="main-area">
+            <div class="topbar">
+                <div class="left">
+                    <button class="btn btn-light" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <div class="search">
+                        <i class="fas fa-search text-muted"></i>
+                        <input type="search" id="top-search" placeholder="Search farmers, schemes, villages..." oninput="topSearch()" aria-label="Search" />
+                    </div>
+                </div>
+                <div class="actions">
+                    <span class="text-muted d-none d-md-inline me-2" id="topDateTime"></span>
+                    <div class="icon-badge"><button class="btn btn-sm" title="Notifications"><i class="fas fa-bell"></i></button><span class="badge-count">3</span></div>
+                    <div class="icon-badge"><button class="btn btn-sm" title="Messages"><i class="fas fa-envelope"></i></button><span class="badge-count">5</span></div>
+                    <button class="btn btn-sm" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <select class="form-select form-select-sm" style="width:110px">
+                        <option selected>English</option>
+                    </select>
+                    <div class="profile-chip">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Ccircle cx='24' cy='16' r='12' fill='%233b572d'/%3E%3Crect x='12' y='32' width='24' height='12' rx='6' fill='%233b572d'/%3E%3C/svg%3E" alt="Admin avatar" />
+                        <div>
+                            <div class="fw-semibold">Govt Admin</div>
+                            <small class="text-muted">Administrator</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="dashboard" class="mt-4">
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-success"><i class="fas fa-seedling"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Total Farmers</div>
+                            <div class="stat-value" id="total-farmers">0</div>
+                        </div>
+                        <div class="stat-trend">+11.2%</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#f2994a"><i class="fas fa-landmark"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Total Schemes</div>
+                            <div class="stat-value" id="total-yojanas">0</div>
+                        </div>
+                        <div class="stat-trend">+7.8%</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#2f80ed"><i class="fas fa-sms"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">SMS Sent</div>
+                            <div class="stat-value" id="recent-sms">0</div>
+                        </div>
+                        <div class="stat-trend">+14.5%</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#8e44ad"><i class="fas fa-certificate"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Certificates Issued</div>
+                            <div class="stat-value" id="total-certificates">0</div>
+                        </div>
+                        <div class="stat-trend">+4.6%</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#f2c94c"><i class="fas fa-hand-holding-usd"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Funds Disbursed</div>
+                            <div class="stat-value" id="total-funds">0</div>
+                        </div>
+                        <div class="stat-trend">+9.2%</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#17a2b8"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Active Villages</div>
+                            <div class="stat-value" id="total-villages">0</div>
+                        </div>
+                        <div class="stat-trend">+3.1%</div>
+                    </div>
+                    <a href="applications.html" class="dashboard-card text-decoration-none" style="cursor:pointer;">
+                        <div class="card-icon" style="background:#c0392b"><i class="fas fa-file-signature"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Pending Applications</div>
+                            <div class="stat-value" id="pending-applications">0</div>
+                        </div>
+                        <div class="stat-trend">Review &rarr;</div>
+                    </a>
+                </div>
+
+                <div class="content-grid">
+                    <div>
+                    <div class="panel-card">
+                        <div class="card-header">
+                            <div>
+                                <h4 class="section-title mb-1">Farmer Management</h4>
+                                <p class="text-muted mb-0">Manage farmers, bulk actions, and records.</p>
+                            </div>
+                            <div class="btn-actions">
+                                <button class="btn btn-gradient" type="button" onclick="openAddFarmerModal()"><i class="fas fa-plus me-2"></i> Add Farmer</button>
+                                <button class="btn btn-outline-secondary" type="button">Import Excel</button>
+                                <button class="btn btn-outline-secondary" type="button" onclick="exportFarmersToExcel()">Export Excel</button>
+                                <button class="btn btn-outline-secondary" type="button" onclick="exportFarmersToPdf()">Export PDF</button>
+                                <button class="btn btn-outline-secondary" type="button" onclick="printFarmersTable()">Print</button>
+                                <button class="btn btn-outline-secondary" type="button" onclick="fetchFarmers()"><i class="fas fa-sync-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gy-3 mb-4">
+                                <div class="col-md-5">
+                                    <input type="search" id="search-name" class="form-control" placeholder="Search by name, phone or village" oninput="applyFilters()" />
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="filter-village" class="form-select">
+                                        <option value="">All Villages</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="filter-status" class="form-select">
+                                        <option value="">All Status</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Pending">Pending</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button class="btn btn-gradient" onclick="applyFilters()">Filter</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive table-main">
+                                <table class="table table-borderless align-middle mb-0" id="farmers-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Photo</th>
+                                            <th>Farmer Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Village</th>
+                                            <th>Taluk</th>
+                                            <th>District</th>
+                                            <th>Status</th>
+                                            <th>Date Added</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <nav aria-label="Farmer pagination" class="mt-4">
+                                <ul class="pagination justify-content-center" id="farmer-pagination"></ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="panel-card glass-card">
+                        <div class="card-header">
+                            <h4 class="section-title mb-0">Recent Activity</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="activity-list" id="activity-timeline"></ul>
+                        </div>
+                    </div>
+                    <div class="charts-row">
+                        <div class="chart-card">
+                            <h6>Farmer Registration (Monthly)</h6>
+                            <canvas id="registrationChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h6>Village Wise Farmers</h6>
+                            <canvas id="smsChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h6>Gender Distribution</h6>
+                            <canvas id="schemeChart"></canvas>
+                        </div>
+                    </div>
+                    </div>
+                    <aside class="right-panel">
+                        <div class="panel-card">
+                            <h6>Quick Actions</h6>
+                            <div class="quick-action" onclick="openAddFarmerModal()"><i class="fas fa-user-plus"></i><div><strong>Add New Farmer</strong><div class="small text-muted">Register quickly</div></div></div>
+                            <div class="quick-action"><i class="fas fa-landmark"></i><div><strong>Add New Scheme</strong><div class="small text-muted">Create Yojana</div></div></div>
+                            <div class="quick-action"><i class="fas fa-sms"></i><div><strong>Send SMS</strong><div class="small text-muted">Broadcast to farmers</div></div></div>
+                            <div class="quick-action"><i class="fas fa-file-alt"></i><div><strong>Generate Report</strong><div class="small text-muted">Export data</div></div></div>
+                        </div>
+                        <div class="panel-card">
+                            <h6>Recent Activity</h6>
+                            <ul class="activity-list" id="activity-timeline-right"></ul>
+                            <a href="#" class="small">View All</a>
+                        </div>
+                        <div class="panel-card">
+                            <h6>Pending Approvals</h6>
+                            <div><span class="badge bg-success me-2">New Farmers <span class="badge bg-light text-dark">3</span></span></div>
+                            <div class="mt-2"><span class="badge bg-warning me-2">Scheme Applications <span class="badge bg-light text-dark">2</span></span></div>
+                            <div class="mt-2"><span class="badge bg-secondary me-2">Document Verifications <span class="badge bg-light text-dark">5</span></span></div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section id="settings" class="mb-5">
+                <div class="panel-card glass-card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="section-title mb-1">Settings</h4>
+                            <p class="text-muted mb-0">Manage panel preferences and application options.</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row gy-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Notification Alerts</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="setting-notifications" checked>
+                                    <label class="form-check-label" for="setting-notifications">Enable SMS alert notifications</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Dashboard Layout</label>
+                                <select class="form-select" id="setting-dashboard-layout">
+                                    <option selected>Default</option>
+                                    <option>Compact</option>
+                                    <option>Expanded</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yojanas" class="mb-5">
+                <div class="panel-card glass-card">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="section-title mb-1">Yojana Management</h4>
+                            <p class="text-muted mb-0">Existing scheme list and management.</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="add-yojana-form" class="row g-3 align-items-end" onsubmit="addYojana(event)">
+                            <div class="col-md-5">
+                                <label for="yojana-name" class="form-label">Scheme Name</label>
+                                <input type="text" id="yojana-name" class="form-control" required />
+                            </div>
+                            <div class="col-md-5">
+                                <label for="yojana-link" class="form-label">Scheme Link</label>
+                                <input type="url" id="yojana-link" class="form-control" required />
+                            </div>
+                            <div class="col-md-2 d-grid">
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-plus-lg me-2"></i>Add Scheme</button>
+                            </div>
+                        </form>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-borderless align-middle mb-0" id="yojanas-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Link</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sms-log" class="mb-5">
+                <div class="panel-card glass-card">
+                    <div class="card-header">
+                        <h4 class="section-title mb-0">SMS Management</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 mb-4" id="sms-status-summary">
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-success-subtle h-100">
+                                    <div class="small text-muted">Delivered</div>
+                                    <strong class="fs-4" id="sms-delivered-count">0</strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-warning-subtle h-100">
+                                    <div class="small text-muted">Pending</div>
+                                    <strong class="fs-4" id="sms-pending-count">0</strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-3 rounded-3 bg-danger-subtle h-100">
+                                    <div class="small text-muted">Failed</div>
+                                    <strong class="fs-4" id="sms-failed-count">0</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-borderless align-middle mb-0" id="sms-log-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Phone Number</th>
+                                        <th>Message</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="help" class="mb-5">
+                <div class="panel-card glass-card">
+                    <div class="card-header d-flex flex-wrap gap-3 align-items-center justify-content-between">
+                        <div>
+                            <h4 class="section-title mb-1">Help Center</h4>
+                            <p class="text-muted mb-0">Find quick answers for managing the Gram Panchayat portal.</p>
+                        </div>
+                        <input type="search" id="help-search" class="form-control" style="max-width:260px" placeholder="Search help topics" aria-label="Search help topics">
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3" id="help-topics">
+                            <div class="col-md-6 help-topic" data-search="sms management delivery status messages">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6><i class="fas fa-sms me-2 text-success"></i>SMS status</h6>
+                                    <p class="small text-muted mb-0">Delivered, pending, and failed messages appear in the SMS Management log after a broadcast is sent.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 help-topic" data-search="farmer management add edit delete farmer">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6><i class="fas fa-tractor me-2 text-success"></i>Manage farmers</h6>
+                                    <p class="small text-muted mb-0">Use Farmer Management to search records, filter by village or status, and export the current list.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 help-topic" data-search="applications approve reject citizen application">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6><i class="fas fa-file-signature me-2 text-success"></i>Review applications</h6>
+                                    <p class="small text-muted mb-0">Open User Applications to review details, approve requests, or add remarks before rejecting them.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 help-topic" data-search="support contact administrator issue">
+                                <div class="border rounded-3 p-3 h-100">
+                                    <h6><i class="fas fa-headset me-2 text-success"></i>Need support?</h6>
+                                    <p class="small text-muted mb-2">Contact the portal administrator when an API or login issue persists.</p>
+                                    <a class="btn btn-sm btn-outline-success" href="contact.html"><i class="fas fa-envelope me-1"></i>Contact support</a>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="help-empty" class="text-muted text-center d-none mb-0">No help topics match your search.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+
+    <div class="modal fade" id="addFarmerModal" tabindex="-1" aria-labelledby="addFarmerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content glass-card">
+                <div class="modal-header border-0 justify-content-between align-items-center">
+                    <div class="header-text-block">
+                        <div class="title-block">
+                            <h5 class="modal-title mb-1" id="addFarmerModalLabel">Add Farmer</h5>
+                        </div>
+                        <div class="note-block">
+                            <p>Register a new farmer with full details.</p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="modal-add-farmer-form" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Farmer Photo</label>
+                                <input class="form-control" type="file" id="farmer-photo" accept="image/*" onchange="previewFarmerPhoto(event)" />
+                                <div class="form-text">Optional profile photo for quick recognition.</div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                <div class="rounded-4 overflow-hidden border p-2" style="width:120px;height:120px;background:#f8fdf7;">
+                                    <img id="farmerPhotoPreview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='100%25' height='100%25' fill='%23edf7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%233b572d' font-family='Poppins, sans-serif' font-size='16'%3EPhoto%3C/text%3E%3C/svg%3E" alt="Farmer preview" class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="modal-farmer-name" class="form-label">Farmer Name</label>
+                                <input type="text" id="modal-farmer-name" class="form-control" required />
+                                <div class="invalid-feedback">Farmer Name is required.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="modal-farmer-phone" class="form-label">Phone Number</label>
+                                <input type="text" id="modal-farmer-phone" class="form-control" maxlength="10" required />
+                                <div class="invalid-feedback">Phone Number must be exactly 10 digits.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="modal-farmer-village" class="form-label">Village</label>
+                                <input type="text" id="modal-farmer-village" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="modal-farmer-address" class="form-label">Address</label>
+                                <textarea id="modal-farmer-address" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="modal-farmer-aadhaar" class="form-label">Aadhaar Number</label>
+                                <input type="text" id="modal-farmer-aadhaar" class="form-control" maxlength="12" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="modal-farmer-age" class="form-label">Age</label>
+                                <input type="number" id="modal-farmer-age" class="form-control" min="18" max="120" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="modal-farmer-gender" class="form-label">Gender</label>
+                                <select id="modal-farmer-gender" class="form-select">
+                                    <option value="">Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitNewFarmer()">Save Farmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewFarmerModal" tabindex="-1" aria-labelledby="viewFarmerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="viewFarmerModalLabel">Farmer Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <img id="view-farmer-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Crect width='100%25' height='100%25' fill='%23edf7eb'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%233b572d' font-family='Poppins, sans-serif' font-size='14'%3EPhoto%3C/text%3E%3C/svg%3E" alt="Farmer" class="rounded-circle" width="96" height="96" />
+                        <div>
+                            <h5 id="view-farmer-name">Farmer Name</h5>
+                            <p class="text-muted mb-1" id="view-farmer-village">Village</p>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+                    <dl class="row">
+                        <dt class="col-sm-4 text-muted">Farmer ID</dt><dd class="col-sm-8" id="view-farmer-id"></dd>
+                        <dt class="col-sm-4 text-muted">Phone</dt><dd class="col-sm-8" id="view-farmer-phone"></dd>
+                        <dt class="col-sm-4 text-muted">Address</dt><dd class="col-sm-8" id="view-farmer-address"></dd>
+                        <dt class="col-sm-4 text-muted">Aadhaar</dt><dd class="col-sm-8" id="view-farmer-aadhaar"></dd>
+                        <dt class="col-sm-4 text-muted">Gender</dt><dd class="col-sm-8" id="view-farmer-gender"></dd>
+                        <dt class="col-sm-4 text-muted">Age</dt><dd class="col-sm-8" id="view-farmer-age"></dd>
+                        <dt class="col-sm-4 text-muted">Date Added</dt><dd class="col-sm-8" id="view-farmer-date"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editFarmerModal" tabindex="-1" aria-labelledby="editFarmerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content glass-card">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="editFarmerModalLabel">Edit Farmer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="modal-edit-farmer-form" class="needs-validation" novalidate>
+                        <input type="hidden" id="edit-farmer-id" />
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="edit-farmer-name" class="form-label">Farmer Name</label>
+                                <input type="text" id="edit-farmer-name" class="form-control" required />
+                                <div class="invalid-feedback">Farmer Name is required.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="edit-farmer-phone" class="form-label">Phone Number</label>
+                                <input type="text" id="edit-farmer-phone" class="form-control" maxlength="10" required />
+                                <div class="invalid-feedback">Phone Number must be exactly 10 digits.</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="edit-farmer-village" class="form-label">Village</label>
+                                <input type="text" id="edit-farmer-village" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-farmer-address" class="form-label">Address</label>
+                                <textarea id="edit-farmer-address" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit-farmer-aadhaar" class="form-label">Aadhaar Number</label>
+                                <input type="text" id="edit-farmer-aadhaar" class="form-control" maxlength="12" />
+                            </div>
+                            <div class="col-md-3">
+                                <label for="edit-farmer-age" class="form-label">Age</label>
+                                <input type="number" id="edit-farmer-age" class="form-control" min="18" max="120" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-farmer-gender" class="form-label">Gender</label>
+                                <select id="edit-farmer-gender" class="form-select">
+                                    <option value="">Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitFarmerEdit(event)">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteConfirmModal" class="delete-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle" tabindex="-1">
+        <div class="delete-modal-card">
+            <div class="delete-modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h5 id="deleteConfirmTitle">Delete Farmer?</h5>
+            <p>This action cannot be undone. Are you sure you want to delete <strong id="delete-farmer-name"></strong>?</p>
+            <div class="delete-modal-actions">
+                <button type="button" class="btn btn-outline-secondary" id="cancel-delete-farmer">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete-farmer">Confirm Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const apiBase = window.location.protocol === 'file:' ? 'http://localhost:5000/api' : '/api';
+        const farmerState = {
+            farmers: [],
+            filtered: [],
+            currentPage: 1,
+            pageSize: 10,
+            deleteTargetId: null,
+            extras: {},
+            selectedPhoto: null
+        };
+        const activityLog = [];
+        let registrationChart;
+        let schemeChart;
+        let smsChart;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initSidebar();
+            initDateTime();
+            initThemeToggle();
+            setupFormValidation();
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+            document.getElementById('confirm-delete-farmer').addEventListener('click', handleDeleteFarmerConfirmed);
+            document.getElementById('cancel-delete-farmer').addEventListener('click', hideDeleteConfirmModal);
+            document.getElementById('deleteConfirmModal').addEventListener('click', event => {
+                if (event.target === event.currentTarget) hideDeleteConfirmModal();
+            });
+            document.getElementById('modal-add-farmer-form').addEventListener('submit', event => event.preventDefault());
+            initSidebarNav();
+            fetchFarmers();
+            fetchYojanas();
+            fetchPendingApplicationsCount();
+            initCharts();
+            refreshActivityTimeline();
+            initSmsStatus();
+            initHelpCenter();
+        });
+
+        async function fetchPendingApplicationsCount() {
+            try {
+                const res = await fetch('/api/admin/applications');
+                const data = await res.json();
+                const el = document.getElementById('pending-applications');
+                if (el && data.totals) animateValue(el, data.totals.pending);
+            } catch (err) {
+                console.error('Failed to load application stats:', err);
+            }
+        }
+
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const saved = localStorage.getItem('smartMandyaSidebar');
+            if (window.innerWidth < 1200) {
+                if (saved === 'open') {
+                    sidebar.classList.add('show');
+                    sidebar.classList.remove('collapsed');
+                }
+            } else {
+                if (saved === 'closed') {
+                    sidebar.classList.add('collapsed');
+                    sidebar.classList.remove('show');
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth < 1200) {
+                sidebar.classList.toggle('show');
+                sidebar.classList.remove('collapsed');
+                localStorage.setItem('smartMandyaSidebar', sidebar.classList.contains('show') ? 'open' : 'closed');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                sidebar.classList.remove('show');
+                localStorage.setItem('smartMandyaSidebar', sidebar.classList.contains('collapsed') ? 'closed' : 'open');
+            }
+        }
+
+        function initDateTime() {
+            const element = document.getElementById('topDateTime');
+            function update() {
+                const now = new Date();
+                element.textContent = now.toLocaleString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            }
+            update();
+            setInterval(update, 1000 * 30);
+        }
+
+        function initThemeToggle() {
+            const savedTheme = localStorage.getItem('smartMandyaTheme') || 'light';
+            if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+            updateThemeIcon();
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const mode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+                localStorage.setItem('smartMandyaTheme', mode);
+                updateThemeIcon();
+            });
+        }
+
+        function initSidebarNav() {
+            const navLinks = document.querySelectorAll('.sidebar nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', event => {
+                    navLinks.forEach(a => a.classList.remove('active'));
+                    link.classList.add('active');
+
+                    if (link.id === 'logout-link') {
+                        event.preventDefault();
+                        handleLogout();
+                        return;
+                    }
+                });
+            });
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('gpAdminLoggedIn');
+            showToast('Logged out successfully.', 'success');
+            setTimeout(() => {
+                window.location.href = 'adminlogin.html';
+            }, 650);
+        }
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('themeToggle').querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'bi bi-sun-fill';
+            } else {
+                icon.className = 'bi bi-moon-stars';
+            }
+        }
+
+        function setupFormValidation() {
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }
+
+        async function fetchFarmers() {
+            try {
+                const response = await fetch(`${apiBase}/farmers`);
+                if (!response.ok) throw new Error('Unable to load farmers');
+                const data = await response.json();
+                farmerState.farmers = data;
+                loadFarmerExtras();
+                farmerState.filtered = [...farmerState.farmers];
+                farmerState.currentPage = 1;
+                updateFarmerCount();
+                renderFarmerTable();
+                updateCharts();
+            } catch (error) {
+                showToast(error.message, 'danger');
+            }
+        }
+
+        async function fetchYojanas() {
+            try {
+                const response = await fetch('http://localhost/gram_panchayat/get_yojanas.php');
+                if (!response.ok) return;
+                const yojanas = await response.json();
+                document.getElementById('total-yojanas').textContent = yojanas.length;
+                updateCharts();
+                yojanas.forEach(addYojanaToTable);
+            } catch (error) {
+                console.warn('Yojana fetch skipped:', error.message);
+            }
+        }
+
+        function renderFarmerTable() {
+            const tbody = document.querySelector('#farmers-table tbody');
+            tbody.innerHTML = '';
+            const start = (farmerState.currentPage - 1) * farmerState.pageSize;
+            const pageItems = farmerState.filtered.slice(start, start + farmerState.pageSize);
+            if (!pageItems.length) {
+                tbody.innerHTML = '<tr><td colspan="11" class="text-center py-4">No farmers found</td></tr>';
+                return;
+            }
+            pageItems.forEach(farmer => {
+                const status = farmer.status || 'Active';
+                const badgeClass = status === 'Pending' ? 'status-pending' : status === 'Verified' ? 'status-verified' : 'status-active';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>#${farmer.id}</strong></td>
+                    <td><img src="${farmer.photo || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23edf7eb\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%233b572d\' font-family=\'Poppins, sans-serif\' font-size=\'9\'%3EPhoto%3C/text%3E%3C/svg%3E'}" class="avatar-sm" alt="photo" /></td>
+                    <td>${escapeHtml(farmer.name)}</td>
+                    <td>${escapeHtml(farmer.phone)}</td>
+                    <td>${escapeHtml(farmer.village || '-')}</td>
+                    <td>${escapeHtml(farmer.taluk || '-')}</td>
+                    <td>${escapeHtml(farmer.district || '-')}</td>
+                    <td><span class="status-badge ${badgeClass}">${status}</span></td>
+                    <td>${new Date(farmer.dateAdded).toLocaleString()}</td>
+                    <td class="table-actions">
+                        <button type="button" class="action-btn view" title="View" onclick="openViewFarmer(${farmer.id})"><i class="bi bi-eye-fill"></i></button>
+                        <button type="button" class="action-btn edit" title="Edit" onclick="openEditFarmer(${farmer.id})"><i class="bi bi-pencil-fill"></i></button>
+                        <button type="button" class="action-btn delete" title="Delete" onclick="openDeleteFarmer(${farmer.id})"><i class="bi bi-trash-fill"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('farmer-pagination');
+            pagination.innerHTML = '';
+            const totalPages = Math.max(1, Math.ceil(farmerState.filtered.length / farmerState.pageSize));
+            const createItem = (page, label, disabled) => {
+                const li = document.createElement('li');
+                li.className = `page-item ${disabled ? 'disabled' : ''} ${farmerState.currentPage === page ? 'active' : ''}`;
+                li.innerHTML = `<button class="page-link">${label}</button>`;
+                if (!disabled) li.querySelector('button').addEventListener('click', () => { farmerState.currentPage = page; renderFarmerTable(); });
+                return li;
+            };
+            pagination.appendChild(createItem(1, '«', farmerState.currentPage === 1));
+            for (let page = 1; page <= totalPages; page++) {
+                pagination.appendChild(createItem(page, page, false));
+            }
+            pagination.appendChild(createItem(totalPages, '»', farmerState.currentPage === totalPages));
+        }
+
+        function applyFilters() {
+            const name = document.getElementById('search-name').value.trim().toLowerCase();
+            const phone = document.getElementById('search-phone').value.trim().toLowerCase();
+            const village = document.getElementById('search-village').value.trim().toLowerCase();
+            farmerState.filtered = farmerState.farmers.filter(f => {
+                return f.name.toLowerCase().includes(name) && f.phone.toLowerCase().includes(phone) && (f.village || '').toLowerCase().includes(village);
+            });
+            farmerState.currentPage = 1;
+            renderFarmerTable();
+        }
+
+        function openAddFarmerModal() {
+            const modal = new bootstrap.Modal(document.getElementById('addFarmerModal'));
+            document.getElementById('modal-add-farmer-form').reset();
+            document.getElementById('farmerPhotoPreview').src = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23edf7eb\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%233b572d\' font-family=\'Poppins, sans-serif\' font-size=\'16\'%3EPhoto%3C/text%3E%3C/svg%3E';
+            farmerState.selectedPhoto = null;
+            document.getElementById('modal-add-farmer-form').classList.remove('was-validated');
+            modal.show();
+        }
+
+        function previewFarmerPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                farmerState.selectedPhoto = reader.result;
+                document.getElementById('farmerPhotoPreview').src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function submitNewFarmer() {
+            const form = document.getElementById('modal-add-farmer-form');
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+            const name = document.getElementById('modal-farmer-name').value.trim();
+            const phone = document.getElementById('modal-farmer-phone').value.trim();
+            const village = document.getElementById('modal-farmer-village').value.trim();
+            const address = document.getElementById('modal-farmer-address').value.trim();
+            const aadhaar = document.getElementById('modal-farmer-aadhaar').value.trim();
+            const gender = document.getElementById('modal-farmer-gender').value;
+            const age = document.getElementById('modal-farmer-age').value;
+            if (!/^\d{10}$/.test(phone)) {
+                document.getElementById('modal-farmer-phone').classList.add('is-invalid');
+                return;
+            }
+            createFarmer({ name, phone, village }).then(newFarmer => {
+                if (!newFarmer) return;
+                farmerState.extras[newFarmer.id] = {
+                    photo: farmerState.selectedPhoto,
+                    address,
+                    aadhaar,
+                    gender,
+                    age,
+                    status: 'Active'
+                };
+                saveFarmerExtras();
+                newFarmer.photo = farmerState.selectedPhoto || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23edf7eb\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%233b572d\' font-family=\'Poppins, sans-serif\' font-size=\'10\'%3EPhoto%3C/text%3E%3C/svg%3E';
+                newFarmer.address = address;
+                newFarmer.aadhaar = aadhaar;
+                newFarmer.gender = gender;
+                newFarmer.age = age;
+                newFarmer.status = 'Active';
+                addActivity('Farmer Added', `Added ${name} (${phone}).`);
+                refreshActivityTimeline();
+                renderFarmerTable();
+                bootstrap.Modal.getInstance(document.getElementById('addFarmerModal')).hide();
+            });
+        }
+
+        async function createFarmer(payload) {
+            try {
+                const response = await fetch(`${apiBase}/farmers`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Create failed');
+                farmerState.farmers.push(result);
+                applyFilters();
+                showToast('Farmer Added Successfully', 'success');
+                updateFarmerCount();
+                updateCharts();
+                return result;
+            } catch (error) {
+                showToast(error.message, 'danger');
+                return null;
+            }
+        }
+
+        function mergeFarmerExtras() {
+            farmerState.farmers = farmerState.farmers.map(f => ({
+                ...f,
+                ...farmerState.extras[f.id]
+            }));
+        }
+
+        function loadFarmerExtras() {
+            farmerState.extras = JSON.parse(localStorage.getItem('smartMandyaFarmerExtras') || '{}');
+            mergeFarmerExtras();
+        }
+
+        function saveFarmerExtras() {
+            localStorage.setItem('smartMandyaFarmerExtras', JSON.stringify(farmerState.extras));
+        }
+
+        async function openEditFarmer(id) {
+            const farmer = farmerState.farmers.find(f => Number(f.id) === Number(id));
+            if (!farmer) return;
+            document.getElementById('edit-farmer-id').value = farmer.id;
+            document.getElementById('edit-farmer-name').value = farmer.name;
+            document.getElementById('edit-farmer-phone').value = farmer.phone;
+            document.getElementById('edit-farmer-village').value = farmer.village || '';
+            document.getElementById('edit-farmer-address').value = farmer.address || '';
+            document.getElementById('edit-farmer-aadhaar').value = farmer.aadhaar || '';
+            document.getElementById('edit-farmer-gender').value = farmer.gender || '';
+            document.getElementById('edit-farmer-age').value = farmer.age || '';
+            document.getElementById('modal-edit-farmer-form').classList.remove('was-validated');
+            new bootstrap.Modal(document.getElementById('editFarmerModal')).show();
+        }
+
+        async function submitFarmerEdit(event) {
+            if (event) event.preventDefault();
+            const form = document.getElementById('modal-edit-farmer-form');
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return;
+            }
+            const id = document.getElementById('edit-farmer-id').value;
+            const name = document.getElementById('edit-farmer-name').value.trim();
+            const phone = document.getElementById('edit-farmer-phone').value.trim();
+            const village = document.getElementById('edit-farmer-village').value.trim();
+            const address = document.getElementById('edit-farmer-address').value.trim();
+            const aadhaar = document.getElementById('edit-farmer-aadhaar').value.trim();
+            const gender = document.getElementById('edit-farmer-gender').value;
+            const age = document.getElementById('edit-farmer-age').value;
+            if (!/^\d{10}$/.test(phone)) {
+                document.getElementById('edit-farmer-phone').classList.add('is-invalid');
+                return;
+            }
+            try {
+                const response = await fetch(`${apiBase}/farmers/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, village })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'Update failed');
+                const index = farmerState.farmers.findIndex(f => Number(f.id) === Number(id));
+                if (index !== -1) {
+                    farmerState.farmers[index] = { ...result, ...farmerState.extras[id], photo: farmerState.extras[id]?.photo };
+                }
+                farmerState.extras[id] = {
+                    ...farmerState.extras[id],
+                    address,
+                    aadhaar,
+                    gender,
+                    age,
+                    status: farmerState.extras[id]?.status || 'Active'
+                };
+                saveFarmerExtras();
+                applyFilters();
+                showToast('Farmer Updated Successfully', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('editFarmerModal')).hide();
+                addActivity('Farmer Updated', `Updated ${name} (${phone}).`);
+                refreshActivityTimeline();
+            } catch (error) {
+                showToast(error.message, 'danger');
+            }
+        }
+
+        function openViewFarmer(id) {
+            const farmer = farmerState.farmers.find(f => Number(f.id) === Number(id));
+            if (!farmer) return;
+            document.getElementById('view-farmer-photo').src = farmer.photo || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'96\' height=\'96\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23edf7eb\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%233b572d\' font-family=\'Poppins, sans-serif\' font-size=\'14\'%3EPhoto%3C/text%3E%3C/svg%3E';
+            document.getElementById('view-farmer-id').textContent = farmer.id;
+            document.getElementById('view-farmer-name').textContent = farmer.name;
+            document.getElementById('view-farmer-phone').textContent = farmer.phone;
+            document.getElementById('view-farmer-village').textContent = farmer.village || '-';
+            document.getElementById('view-farmer-address').textContent = farmer.address || '-';
+            document.getElementById('view-farmer-aadhaar').textContent = farmer.aadhaar || '-';
+            document.getElementById('view-farmer-gender').textContent = farmer.gender || '-';
+            document.getElementById('view-farmer-age').textContent = farmer.age || '-';
+            document.getElementById('view-farmer-date').textContent = new Date(farmer.dateAdded).toLocaleString();
+            new bootstrap.Modal(document.getElementById('viewFarmerModal')).show();
+        }
+
+        function showDeleteConfirmModal() {
+            const overlay = document.getElementById('deleteConfirmModal');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideDeleteConfirmModal() {
+            const overlay = document.getElementById('deleteConfirmModal');
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function openDeleteFarmer(id) {
+            const farmer = farmerState.farmers.find(f => Number(f.id) === Number(id));
+            if (!farmer) return;
+            farmerState.deleteTargetId = id;
+            document.getElementById('delete-farmer-name').textContent = `${farmer.name} (${farmer.phone})`;
+            showDeleteConfirmModal();
+        }
+
+        async function handleDeleteFarmerConfirmed() {
+            const id = farmerState.deleteTargetId;
+            if (!id) return;
+            try {
+                const response = await fetch(`${apiBase}/farmers/${id}`, { method: 'DELETE' });
+                if (!response.ok) {
+                    const result = await response.json();
+                    throw new Error(result.error || 'Delete failed');
+                }
+                farmerState.farmers = farmerState.farmers.filter(f => Number(f.id) !== Number(id));
+                delete farmerState.extras[id];
+                saveFarmerExtras();
+                applyFilters();
+                updateFarmerCount();
+                showToast('Farmer Deleted Successfully', 'success');
+                addActivity('Farmer Deleted', `Deleted farmer ID #${id}.`);
+                refreshActivityTimeline();
+                hideDeleteConfirmModal();
+            } catch (error) {
+                showToast(error.message, 'danger');
+            } finally {
+                farmerState.deleteTargetId = null;
+            }
+        }
+
+        function topSearch() {
+            const query = document.getElementById('top-search').value.trim().toLowerCase();
+            if (!query) return applyFilters();
+            farmerState.filtered = farmerState.farmers.filter(f => {
+                return [f.name, f.phone, f.village].some(value => String(value || '').toLowerCase().includes(query));
+            });
+            farmerState.currentPage = 1;
+            renderFarmerTable();
+        }
+
+        function updateFarmerCount() {
+            animateValue(document.getElementById('total-farmers'), farmerState.farmers.length);
+        }
+
+        function animateValue(target, endValue, duration = 600) {
+            const startValue = Number(target.textContent) || 0;
+            const range = endValue - startValue;
+            const startTime = performance.now();
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                target.textContent = Math.floor(startValue + range * progress);
+                if (progress < 1) requestAnimationFrame(animate);
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function escapeHtml(value) {
+            const div = document.createElement('div');
+            div.textContent = value || '';
+            return div.innerHTML;
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toastEl = document.createElement('div');
+            toastEl.className = `toast align-items-center text-bg-${type} border-0 show`;
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+            toastEl.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="toast-body">${escapeHtml(message)}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.parentElement.parentElement.remove()" aria-label="Close"></button>
+                </div>
+            `;
+            container.appendChild(toastEl);
+            setTimeout(() => toastEl.remove(), 4200);
+        }
+
+        function addActivity(title, detail) {
+            activityLog.unshift({ title, detail, time: new Date().toLocaleString() });
+            if (activityLog.length > 6) activityLog.pop();
+        }
+
+        function refreshActivityTimeline() {
+            const html = activityLog.map(item => `
+                <li>
+                    <time>${item.time}</time>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <span class="text-muted">${escapeHtml(item.detail)}</span>
+                </li>
+            `).join('');
+            const list = document.getElementById('activity-timeline');
+            if (list) list.innerHTML = html;
+            const rightList = document.getElementById('activity-timeline-right');
+            if (rightList) rightList.innerHTML = html;
+        }
+
+        function initSmsStatus() {
+            renderSmsStatus();
+        }
+
+        function getSmsLog() {
+            try {
+                return JSON.parse(localStorage.getItem('smartMandyaSmsLog') || '[]');
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function renderSmsStatus() {
+            const records = getSmsLog();
+            const counts = records.reduce((summary, record) => {
+                const status = String(record.status || 'Pending').toLowerCase();
+                if (status === 'delivered') summary.delivered += 1;
+                else if (status === 'failed') summary.failed += 1;
+                else summary.pending += 1;
+                return summary;
+            }, { delivered: 0, pending: 0, failed: 0 });
+
+            document.getElementById('sms-delivered-count').textContent = counts.delivered;
+            document.getElementById('sms-pending-count').textContent = counts.pending;
+            document.getElementById('sms-failed-count').textContent = counts.failed;
+
+            const body = document.querySelector('#sms-log-table tbody');
+            if (!records.length) {
+                body.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No SMS activity yet.</td></tr>';
+                return;
+            }
+            body.innerHTML = records.slice().reverse().map(record => `
+                <tr>
+                    <td>${escapeHtml(record.id)}</td>
+                    <td>${escapeHtml(record.phone)}</td>
+                    <td>${escapeHtml(record.message)}</td>
+                    <td><span class="badge text-bg-${record.status === 'Delivered' ? 'success' : record.status === 'Failed' ? 'danger' : 'warning'}">${escapeHtml(record.status)}</span></td>
+                    <td>${escapeHtml(record.date)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function initHelpCenter() {
+            const search = document.getElementById('help-search');
+            const topics = document.querySelectorAll('.help-topic');
+            const empty = document.getElementById('help-empty');
+            search.addEventListener('input', () => {
+                const query = search.value.trim().toLowerCase();
+                let visible = 0;
+                topics.forEach(topic => {
+                    const matches = !query || topic.dataset.search.includes(query);
+                    topic.classList.toggle('d-none', !matches);
+                    if (matches) visible += 1;
+                });
+                empty.classList.toggle('d-none', visible > 0);
+            });
+        }
+
+        function initCharts() {
+            const ctx1 = document.getElementById('registrationChart');
+            registrationChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{ label: 'Farmers', data: [12, 24, 36, 58, 70, 92], borderColor: '#216e34', backgroundColor: 'rgba(33, 110, 52, 0.18)', fill: true, tension: 0.35, pointRadius: 4 }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+            const ctx2 = document.getElementById('schemeChart');
+            schemeChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: { labels: ['Health', 'Irrigation', 'Education', 'Livelihood'], datasets: [{ data: [35, 25, 20, 20], backgroundColor: ['#6a994e', '#b88e2b', '#4f772d', '#91c788'] }] },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+            const ctx3 = document.getElementById('smsChart');
+            smsChart = new Chart(ctx3, {
+                type: 'bar',
+                data: { labels: ['Alerts', 'Updates', 'Reminders', 'Announcements'], datasets: [{ label: 'Sent', data: [68, 48, 54, 82], backgroundColor: '#2f7d32' }] },
+                options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        function updateCharts() {
+            if (registrationChart) registrationChart.data.datasets[0].data = [12, 24, 36, 58, 70, Math.max(90, farmerState.farmers.length)];
+            registrationChart?.update();
+            document.getElementById('recent-sms').textContent = Math.max(24, Math.round(farmerState.farmers.length * 0.8));
+            if (smsChart) smsChart.data.datasets[0].data = [Math.round(farmerState.farmers.length * 0.6), Math.round(farmerState.farmers.length * 0.4), Math.round(farmerState.farmers.length * 0.55), Math.round(farmerState.farmers.length * 0.9)];
+            smsChart?.update();
+        }
+
+        function exportFarmersToExcel() {
+            const exportData = farmerState.filtered.map(f => ({
+                'Farmer ID': f.id,
+                'Farmer Name': f.name,
+                'Phone Number': f.phone,
+                Village: f.village || '',
+                'Date Added': new Date(f.dateAdded).toLocaleString(),
+                Status: f.status || 'Active'
+            }));
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Farmers');
+            XLSX.writeFile(workbook, 'farmers.xlsx');
+        }
+
+        async function exportFarmersToPdf() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+            const body = farmerState.filtered.map(f => [
+                f.id,
+                f.name,
+                f.phone,
+                f.village || '-',
+                new Date(f.dateAdded).toLocaleString(),
+                f.status || 'Active'
+            ]);
+            doc.autoTable({
+                head: [['ID', 'Name', 'Phone', 'Village', 'Date Added', 'Status']],
+                body,
+                startY: 40,
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [33, 110, 52], textColor: 255 }
+            });
+            doc.save('farmers.pdf');
+        }
+
+        function printFarmersTable() {
+            const tableHtml = document.querySelector('#farmers-table').outerHTML;
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                showToast('Unable to open print window', 'danger');
+                return;
+            }
+            printWindow.document.write(`
+                <html><head><title>Farmers report</title>
+                <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+                </head><body class="p-4"><h2>Farmers List</h2>${tableHtml}</body></html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => printWindow.print(), 300);
+        }
+
+        function addYojana(event) {
+            event.preventDefault();
+            const yojanaName = document.getElementById('yojana-name').value;
+            const yojanaLink = document.getElementById('yojana-link').value;
+            if (!yojanaName || !yojanaLink) {
+                showToast('Provide scheme name and link.', 'danger');
+                return;
+            }
+            fetch('http://localhost/gram_panchayat/add_yojana.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `name=${encodeURIComponent(yojanaName)}&link=${encodeURIComponent(yojanaLink)}`
+            })
+                .then(res => res.json())
+                .then((newYojana) => {
+                    addYojanaToTable(newYojana);
+                    document.getElementById('yojana-name').value = '';
+                    document.getElementById('yojana-link').value = '';
+                    document.getElementById('total-yojanas').textContent = Number(document.getElementById('total-yojanas').textContent || 0) + 1;
+                    addActivity('Scheme Added', `${yojanaName} created.`);
+                    refreshActivityTimeline();
+                })
+                .catch(() => showToast('Unable to add scheme.', 'danger'));
+        }
+
+        function addYojanaToTable(yojana) {
+            const yojanasTable = document.getElementById('yojanas-table').getElementsByTagName('tbody')[0];
+            const newRow = yojanasTable.insertRow();
+            newRow.innerHTML = `
+                <td>${escapeHtml(yojana.id)}</td>
+                <td>${escapeHtml(yojana.name)}</td>
+                <td><a href="${escapeHtml(yojana.link)}" target="_blank" rel="noreferrer">View</a></td>
+                <td><button class="btn btn-outline-danger btn-sm" onclick="deleteYojana(this, ${yojana.id})">Delete</button></td>
+            `;
+        }
+
+        function deleteYojana(button, id) {
+            fetch('http://localhost/gram_panchayat/delete_yojana.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${encodeURIComponent(id)}`
+            }).then(() => {
+                button.closest('tr').remove();
+                showToast('Scheme removed successfully', 'success');
+            }).catch(() => showToast('Unable to remove scheme', 'danger'));
+        }
+
+        function sendSmsToFarmers(name, link) {
+            const records = getSmsLog();
+            records.push({
+                id: `SMS-${Date.now()}`,
+                phone: 'Farmer broadcast',
+                message: `Scheme update: ${name}`,
+                status: 'Delivered',
+                date: new Date().toLocaleString('en-IN')
+            });
+            localStorage.setItem('smartMandyaSmsLog', JSON.stringify(records.slice(-50)));
+            renderSmsStatus();
+            addActivity('SMS Sent', `Broadcast sent for ${name}.`);
+            refreshActivityTimeline();
+        }
+    </script>
+</body>
+</html>

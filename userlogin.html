@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserLogin | Gram Panchayat</title>
+    <link href="bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #1c6f2d;
+            --primary-green-dark: #11471d;
+            --accent-gold: #d4af37;
+            --glass-white: rgba(255, 255, 255, 0.94);
+            --text-dark: #1f2a1d;
+            --text-muted: #606c5f;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-image: linear-gradient(to bottom right, rgba(4,25,11,0.78), rgba(8,39,17,0.92)), url('images/index_hero_2000x1200.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .wrap { min-height: 100vh; display: flex; flex-direction: column; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; }
+        .topbar .brand { color: #fff; font-weight: 700; font-size: 1.2rem; display: flex; gap: .6rem; align-items: center; }
+        .topbar .brand i { color: var(--accent-gold); }
+        .topbar a.back-link { color: rgba(255,255,255,.85); text-decoration: none; font-size: .95rem; }
+        .topbar a.back-link:hover { color: #fff; }
+
+        .center-area { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .auth-card {
+            width: 100%; max-width: 460px; background: var(--glass-white);
+            border-radius: 24px; box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+            padding: 2.5rem 2.25rem; backdrop-filter: blur(6px);
+        }
+        .auth-card h2 { color: var(--primary-green-dark); font-weight: 700; margin-bottom: .25rem; }
+        .auth-card p.subtitle { color: var(--text-muted); margin-bottom: 1.5rem; }
+        .divider-gold { width: 60px; height: 4px; border-radius: 999px; background: var(--accent-gold); margin: .6rem 0 1.25rem; }
+
+        .form-control { border-radius: 14px; padding: .8rem 1rem; border: 1px solid rgba(110,158,95,0.3); }
+        .form-control:focus { border-color: var(--primary-green); box-shadow: 0 0 0 .2rem rgba(28,111,45,0.16); }
+        .input-group-text { background: rgba(28,111,45,0.08); color: var(--primary-green); border: 1px solid rgba(110,158,95,0.3); }
+
+        .btn-main { background: var(--primary-green); border-color: var(--primary-green); color: #fff; border-radius: 999px; font-weight: 600; padding: .7rem 1rem; }
+        .btn-main:hover { background: #195d27; color: #fff; }
+        .btn-outline-main { border-radius: 999px; font-weight: 600; padding: .7rem 1rem; border: 1.5px solid var(--primary-green); color: var(--primary-green); background: transparent; }
+        .btn-outline-main:hover { background: rgba(28,111,45,0.08); }
+
+        .tab-switch { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
+        .tab-switch button {
+            flex: 1; border: none; background: rgba(28,111,45,0.08); color: var(--primary-green-dark);
+            font-weight: 600; padding: .6rem; border-radius: 999px; transition: all .2s ease;
+        }
+        .tab-switch button.active { background: var(--primary-green); color: #fff; }
+
+        .status-msg { margin-top: 1rem; padding: .7rem 1rem; border-radius: 12px; font-size: .92rem; display: none; }
+        .status-msg.show { display: block; }
+        .status-msg.success { background: rgba(28,111,45,0.12); color: var(--primary-green-dark); }
+        .status-msg.failed { background: rgba(198,40,40,0.1); color: #b52c2c; }
+
+        .welcome-chip { display: inline-flex; align-items: center; gap: .5rem; background: rgba(28,111,45,0.1); color: var(--primary-green-dark); padding: .4rem .9rem; border-radius: 999px; font-size: .85rem; font-weight: 600; margin-bottom: .75rem; }
+
+        table.status-table { width: 100%; font-size: .88rem; border-collapse: collapse; margin-top: .5rem; }
+        table.status-table th, table.status-table td { padding: .55rem .5rem; border-bottom: 1px solid rgba(0,0,0,0.06); text-align: left; }
+        table.status-table th { color: var(--text-muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; }
+        .badge-status { padding: .3rem .65rem; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+        .badge-pending { background: rgba(212,175,55,0.18); color: #8a6d00; }
+        .badge-approved { background: rgba(28,111,45,0.15); color: var(--primary-green-dark); }
+        .badge-rejected { background: rgba(198,40,40,0.12); color: #b52c2c; }
+
+        .footer-note { text-align: center; color: rgba(255,255,255,.7); font-size: .82rem; padding: 1rem; }
+        .empty-note { color: var(--text-muted); font-size: .88rem; text-align: center; padding: 1rem 0; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="topbar">
+        <div class="brand"><i class="fa-solid fa-landmark"></i> Gram Panchayat Portal</div>
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left me-1"></i> Back to Home</a>
+    </div>
+
+    <div class="center-area">
+        <!-- AUTH CARD -->
+        <div class="auth-card" id="authCard">
+            <div class="tab-switch">
+                <button type="button" id="tabLogin" class="active" onclick="switchTab('login')">Login</button>
+                <button type="button" id="tabRegister" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <div id="loginPanel">
+                <h2>UserLogin</h2>
+                <p class="subtitle">Login to apply for services and track your application status.</p>
+                <form id="loginForm" novalidate>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="loginUsername" class="form-control" placeholder="Username" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-main w-100" id="loginBtn"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</button>
+                    <div id="loginStatus" class="status-msg"></div>
+                </form>
+            </div>
+
+            <div id="registerPanel" style="display:none;">
+                <h2>New User Registration</h2>
+                <p class="subtitle">Create an account to start applying for Gram Panchayat services.</p>
+                <form id="registerForm" novalidate>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="regUsername" class="form-control" placeholder="Choose a username" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                        <input type="text" id="regPhone" class="form-control" placeholder="Phone number">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="regPassword" class="form-control" placeholder="Password (min 4 characters)" required>
+                    </div>
+                    <button type="submit" class="btn btn-main w-100" id="registerBtn"><i class="fa-solid fa-user-plus me-1"></i> Register</button>
+                    <div id="registerStatus" class="status-msg"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- APPLY / STATUS CARD (shown after login) -->
+        <div class="auth-card" id="appCard" style="display:none; max-width: 640px;">
+            <div class="welcome-chip"><i class="fa-solid fa-circle-check"></i> <span id="welcomeUser">Welcome</span></div>
+            <div class="d-flex justify-content-between align-items-start">
+                <h2>Apply for a Service</h2>
+                <button class="btn btn-outline-main btn-sm" onclick="logout()"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</button>
+            </div>
+            <p class="subtitle">Choose a service, submit your application, and track its status below.</p>
+
+            <form id="applyForm" class="mb-4">
+                <div class="mb-3">
+                    <select id="serviceName" class="form-control" required>
+                        <option value="">-- Choose a service --</option>
+                        <option>Birth Certificate</option>
+                        <option>Death Certificate</option>
+                        <option>Caste Certificate</option>
+                        <option>Income Certificate</option>
+                        <option>Property Tax Payment</option>
+                        <option>Water Connection Request</option>
+                        <option>Road Repair Request</option>
+                        <option>Agricultural Subsidy</option>
+                        <option>Social Welfare Scheme</option>
+                        <option>Ration Card Update</option>
+                        <option>General Complaint</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <textarea id="applyDetails" class="form-control" rows="2" placeholder="Any additional details (optional)"></textarea>
+                </div>
+                <button type="submit" class="btn btn-main w-100" id="applyBtn"><i class="fa-solid fa-paper-plane me-1"></i> Submit Application</button>
+                <div id="applyStatus" class="status-msg"></div>
+            </form>
+
+            <h5 class="mb-2" style="color:var(--primary-green-dark);">My Applications</h5>
+            <div id="myApplicationsWrap">
+                <div class="empty-note">Loading your applications...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">Your application will be reviewed by the Gram Panchayat admin. Status updates appear here automatically.</div>
+</div>
+
+<script>
+    function switchTab(tab) {
+        document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+        document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+        document.getElementById('loginPanel').style.display = tab === 'login' ? 'block' : 'none';
+        document.getElementById('registerPanel').style.display = tab === 'register' ? 'block' : 'none';
+    }
+
+    function showStatus(elId, message, type) {
+        const el = document.getElementById(elId);
+        el.textContent = message;
+        el.className = `status-msg show ${type}`;
+    }
+
+    // ---------- Register ----------
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('regUsername').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const btn = document.getElementById('registerBtn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/citizen/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, phone })
+            });
+            const data = await res.json();
+            showStatus('registerStatus', data.message, data.success ? 'success' : 'failed');
+            if (data.success) {
+                setTimeout(() => { switchTab('login'); document.getElementById('loginUsername').value = username; }, 900);
+            }
+        } catch (err) {
+            showStatus('registerStatus', 'Something went wrong. Please try again.', 'failed');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    // ---------- Login ----------
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const btn = document.getElementById('loginBtn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/citizen/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (data.success) {
+                sessionStorage.setItem('gpCitizenUsername', data.username);
+                showLoggedInView(data.username);
+            } else {
+                showStatus('loginStatus', data.message, 'failed');
+            }
+        } catch (err) {
+            showStatus('loginStatus', 'Something went wrong. Please try again.', 'failed');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    function logout() {
+        sessionStorage.removeItem('gpCitizenUsername');
+        document.getElementById('appCard').style.display = 'none';
+        document.getElementById('authCard').style.display = 'block';
+        document.getElementById('loginForm').reset();
+    }
+
+    function showLoggedInView(username) {
+        document.getElementById('authCard').style.display = 'none';
+        document.getElementById('appCard').style.display = 'block';
+        document.getElementById('welcomeUser').textContent = `Logged in as ${username}`;
+        loadMyApplications();
+    }
+
+    // ---------- Apply ----------
+    document.getElementById('applyForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = sessionStorage.getItem('gpCitizenUsername');
+        const serviceName = document.getElementById('serviceName').value;
+        const details = document.getElementById('applyDetails').value.trim();
+        if (!serviceName) return;
+
+        const btn = document.getElementById('applyBtn');
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/citizen/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, serviceName, details })
+            });
+            const data = await res.json();
+            showStatus('applyStatus', data.message, data.success ? 'success' : 'failed');
+            if (data.success) {
+                document.getElementById('applyForm').reset();
+                loadMyApplications();
+            }
+        } catch (err) {
+            showStatus('applyStatus', 'Something went wrong. Please try again.', 'failed');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    function statusBadge(status) {
+        const map = { pending: 'badge-pending', approved: 'badge-approved', rejected: 'badge-rejected' };
+        const cls = map[status] || 'badge-pending';
+        return `<span class="badge-status ${cls}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>`;
+    }
+
+    async function loadMyApplications() {
+        const username = sessionStorage.getItem('gpCitizenUsername');
+        const wrap = document.getElementById('myApplicationsWrap');
+        if (!username) return;
+        try {
+            const res = await fetch(`/api/citizen/applications/${encodeURIComponent(username)}`);
+            const data = await res.json();
+            const applications = (data.applications || []).sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+            if (applications.length === 0) {
+                wrap.innerHTML = '<div class="empty-note">You have not submitted any applications yet.</div>';
+                return;
+            }
+            let html = '<table class="status-table"><thead><tr><th>Service</th><th>Submitted</th><th>Status</th><th>Remarks</th></tr></thead><tbody>';
+            applications.forEach(a => {
+                html += `<tr>
+                    <td>${escapeHtml(a.serviceName)}</td>
+                    <td>${new Date(a.submittedAt).toLocaleDateString()}</td>
+                    <td>${statusBadge(a.status)}</td>
+                    <td>${escapeHtml(a.remarks || '')}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            wrap.innerHTML = html;
+        } catch (err) {
+            wrap.innerHTML = '<div class="empty-note">Could not load applications right now.</div>';
+        }
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    // Auto-login if a session already exists
+    (function init() {
+        const existing = sessionStorage.getItem('gpCitizenUsername');
+        if (existing) showLoggedInView(existing);
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Citizen Applications | SMART MANDYA Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .apps-toolbar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .filter-pills { display: flex; gap: .5rem; flex-wrap: wrap; }
+        .filter-pill { border: 1px solid rgba(20,70,40,0.15); background: #fff; color: var(--muted-text, #58625a); padding: .4rem .9rem; border-radius: 999px; font-size: .85rem; font-weight: 600; cursor: pointer; }
+        .filter-pill.active { background: var(--primary, #35b135); color: #fff; border-color: var(--primary, #35b135); }
+        .badge-status { display: inline-flex; align-items: center; justify-content: center; min-width: 92px; padding: .45rem .75rem; border-radius: 999px; font-size: .8rem; font-weight: 800; letter-spacing: .02em; white-space: nowrap; }
+        .badge-pending { background: rgba(212,175,55,0.18); color: #8a6d00; }
+        .badge-approved { background: rgba(28,111,45,0.15); color: #154f33; }
+        .badge-rejected { background: rgba(198,40,40,0.12); color: #b52c2c; }
+        .apps-table th, .apps-table td { vertical-align: middle; font-size: .9rem; }
+        .apps-table .status-column { min-width: 125px; text-align: center; }
+        .action-btn { border: none; border-radius: 8px; padding: .35rem .7rem; font-size: .8rem; font-weight: 600; margin-right: .3rem; }
+        .btn-approve { background: rgba(28,111,45,0.12); color: #154f33; }
+        .btn-approve:hover { background: rgba(28,111,45,0.22); }
+        .btn-reject { background: rgba(198,40,40,0.1); color: #b52c2c; }
+        .btn-reject:hover { background: rgba(198,40,40,0.2); }
+        .empty-note { text-align: center; padding: 2.5rem 1rem; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand-logo">
+                <img src="images/karnataka-emblem-mark.jpeg" alt="Karnataka Government emblem" />
+                <div>
+                    <h1>SMART MANDYA</h1>
+                    <p>Gram Panchayat Portal</p>
+                </div>
+            </div>
+
+            <div class="profile-card d-flex align-items-center gap-3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ccircle cx='32' cy='24' r='16' fill='%233b572d'/%3E%3Crect x='16' y='40' width='32' height='18' rx='9' fill='%233b572d'/%3E%3C/svg%3E" alt="Admin" />
+                <div>
+                    <div class="fw-bold">Government Admin</div>
+                    <div class="small text-white-50">Administrator • <span class="online-dot"></span> Online</div>
+                </div>
+            </div>
+
+            <nav>
+                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="applications.html" class="active"><i class="fas fa-file-signature"></i> Citizen Applications</a>
+                <a href="dashboard.html#farmers"><i class="fas fa-tractor"></i> Farmer Management</a>
+                <a href="dashboard.html#yojanas"><i class="fas fa-landmark"></i> Scheme (Yojana)</a>
+                <a href="dashboard.html#sms-log"><i class="fas fa-sms"></i> SMS Management</a>
+                <a href="user_management.html"><i class="fas fa-users-cog"></i> User Management</a>
+                <a href="dashboard.html#documents"><i class="fas fa-file-alt"></i> Documents</a>
+                <a href="dashboard.html#settings"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#logout" id="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+            </aside>
+
+            <main class="main-area" id="main-area">
+            <div class="topbar">
+                <div class="left">
+                    <button class="btn btn-light" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+                    <div><strong>Citizen Applications</strong></div>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="loadApplications()"><i class="fas fa-rotate me-1"></i> Refresh</button>
+                </div>
+            </div>
+
+            <section class="mt-4">
+                <div class="dashboard-cards mb-4">
+                    <div class="dashboard-card">
+                        <div class="card-icon bg-success"><i class="fas fa-file-signature"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Total Applications</div>
+                            <div class="stat-value" id="stat-total">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#d4af37"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Pending</div>
+                            <div class="stat-value" id="stat-pending">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#1c6f2d"><i class="fas fa-check"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Approved</div>
+                            <div class="stat-value" id="stat-approved">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-icon" style="background:#b52c2c"><i class="fas fa-xmark"></i></div>
+                        <div class="card-info">
+                            <div class="stat-label">Rejected</div>
+                            <div class="stat-value" id="stat-rejected">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <div class="apps-toolbar">
+                        <div class="filter-pills" id="filterPills">
+                            <button class="filter-pill active" data-filter="all">All</button>
+                            <button class="filter-pill" data-filter="pending">Pending</button>
+                            <button class="filter-pill" data-filter="approved">Approved</button>
+                            <button class="filter-pill" data-filter="rejected">Rejected</button>
+                        </div>
+                        <input type="search" id="searchBox" class="form-control" style="max-width:260px" placeholder="Search citizen or service...">
+                    </div>
+
+                    <div class="table-main">
+                        <table class="table apps-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Citizen</th>
+                                    <th>Service</th>
+                                    <th>Details</th>
+                                    <th>Submitted</th>
+                                    <th class="status-column">Status</th>
+                                    <th>Remarks</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applicationsBody">
+                                <tr><td colspan="7" class="empty-note">Loading applications...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple auth guard consistent with adminlogin.html
+        if (localStorage.getItem('gpAdminLoggedIn') !== 'true') {
+            window.location.href = 'adminlogin.html';
+        }
+
+        document.getElementById('logout-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('gpAdminLoggedIn');
+            window.location.href = 'adminlogin.html';
+        });
+
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        let allApplications = [];
+        let currentFilter = 'all';
+
+        async function loadApplications() {
+            const tbody = document.getElementById('applicationsBody');
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-note">Loading applications...</td></tr>';
+            try {
+                const res = await fetch('/api/admin/applications');
+                const data = await res.json();
+                allApplications = data.applications || [];
+                updateStats(data.totals);
+                renderTable();
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-note">Could not load applications. Please try again.</td></tr>';
+            }
+        }
+
+        function updateStats(totals) {
+            if (!totals) return;
+            document.getElementById('stat-total').textContent = totals.total;
+            document.getElementById('stat-pending').textContent = totals.pending;
+            document.getElementById('stat-approved').textContent = totals.approved;
+            document.getElementById('stat-rejected').textContent = totals.rejected;
+        }
+
+        function statusBadge(status) {
+            const normalizedStatus = String(status || 'pending').toLowerCase();
+            const map = { pending: ['badge-pending', 'fa-hourglass-half'], approved: ['badge-approved', 'fa-check'], rejected: ['badge-rejected', 'fa-xmark'] };
+            const [cls, icon] = map[normalizedStatus] || map.pending;
+            const label = normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1);
+            return `<span class="badge-status ${cls}"><i class="fas ${icon} me-2"></i>${label}</span>`;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('applicationsBody');
+            const search = document.getElementById('searchBox').value.trim().toLowerCase();
+
+            let filtered = allApplications.filter(a => currentFilter === 'all' || a.status === currentFilter);
+            if (search) {
+                filtered = filtered.filter(a =>
+                    a.username.toLowerCase().includes(search) ||
+                    a.serviceName.toLowerCase().includes(search)
+                );
+            }
+            filtered.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-note">No applications found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(a => `
+                <tr>
+                    <td><i class="fas fa-user-circle text-muted me-1"></i>${escapeHtml(a.username)}</td>
+                    <td>${escapeHtml(a.serviceName)}</td>
+                    <td>${escapeHtml(a.details || '-')}</td>
+                    <td>${new Date(a.submittedAt).toLocaleString()}</td>
+                    <td>${statusBadge(a.status)}</td>
+                    <td>${escapeHtml(a.remarks || '')}</td>
+                    <td>
+                        ${a.status !== 'approved' ? `<button class="action-btn btn-approve" onclick="setStatus(${a.id}, 'approved')"><i class="fas fa-check"></i> Approve</button>` : ''}
+                        ${a.status !== 'rejected' ? `<button class="action-btn btn-reject" onclick="setStatus(${a.id}, 'rejected')"><i class="fas fa-xmark"></i> Reject</button>` : ''}
+                        ${a.status !== 'pending' ? `<button class="action-btn" style="background:rgba(0,0,0,0.06);color:#444;" onclick="setStatus(${a.id}, 'pending')"><i class="fas fa-rotate-left"></i> Reset</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function setStatus(id, status) {
+            let remarks = '';
+            if (status === 'approved') remarks = 'Application approved by Gram Panchayat admin.';
+            if (status === 'rejected') remarks = 'Application rejected. Please contact the Panchayat office for details.';
+            if (status === 'pending') remarks = 'Application reopened for review.';
+
+            try {
+                const res = await fetch(`/api/admin/applications/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status, remarks })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadApplications();
+                } else {
+                    alert(data.message || 'Could not update application.');
+                }
+            } catch (err) {
+                alert('Something went wrong. Please try again.');
+            }
+        }
+
+        document.getElementById('filterPills').addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-pill');
+            if (!btn) return;
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            renderTable();
+        });
+
+        document.getElementById('searchBox').addEventListener('input', renderTable);
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        loadApplications();
+    </script>
+</body>
+</html>

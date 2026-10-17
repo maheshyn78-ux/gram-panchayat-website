@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin User & Yojana Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadUsersFromLocalStorage();
+            loadYojanasFromLocalStorage();
+        });
+
+        function loadUsersFromLocalStorage() {
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+            users.forEach(addUserToTable);
+        }
+
+        function loadYojanasFromLocalStorage() {
+            const yojanas = JSON.parse(localStorage.getItem("yojanas")) || [];
+            yojanas.forEach(addYojanaToTable);
+        }
+
+        function addUser(event) {
+    event.preventDefault();
+    const userName = document.getElementById('user-name').value.trim();
+    const userPhone = document.getElementById('user-phone').value.trim();
+
+    if (!userName || !userPhone) {
+        alert("Please enter both name and phone number.");
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Check if the phone number already exists
+    const isDuplicate = users.some(user => user.phone === userPhone);
+    if (isDuplicate) {
+        alert("This phone number is already registered. Please enter a unique number.");
+        return;
+    }
+
+    const newUser = { id: users.length + 1, name: userName, phone: userPhone };
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    addUserToTable(newUser);
+    sendUserNotification(userName, userPhone); // Send SMS to the new user
+
+    document.getElementById('user-name').value = '';
+    document.getElementById('user-phone').value = '';
+}
+
+// Function to send SMS to the newly added user
+function sendUserNotification(name, phone) {
+    const message = `Welcome ${name}! You have been added to the system successfully. Stay updated for new Yojanas.`;
+    sendSMS(phone, message);
+}
+
+        function addUserToTable(user) {
+            const usersTable = document.getElementById('users-table').getElementsByTagName('tbody')[0];
+            const newRow = usersTable.insertRow();
+            newRow.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.phone}</td>
+                <td>
+                    <a href="tel:${user.phone}" class="btn btn-success">Call</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="deleteUser(this, ${user.id})">Delete</button>
+                </td>
+            `;
+        }
+
+        function deleteUser(button, id) {
+            if (!confirm("Are you sure you want to delete this user?")) return;
+            
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            users = users.filter(user => user.id !== id);
+            localStorage.setItem("users", JSON.stringify(users));
+            
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        const SMS_API_KEY = "qbu8iCO9t2njHTGwzpLx1lkE04vNm3dQgXrSRWDoKZPfsFh6IV6ufX3cYUVi9kwQ2OheH5JzA8vp0dmr"; // Replace with your Fast2SMS API Key
+
+    function addYojana(event) {
+        event.preventDefault();
+        const yojanaName = document.getElementById('yojana-name').value.trim();
+        const yojanaDetails = document.getElementById('yojana-details').value.trim();
+        const yojanaLink = document.getElementById('yojana-link').value.trim();
+
+        if (!yojanaName || !yojanaDetails) {
+            alert("Please enter Yojana name and details.");
+            return;
+        }
+
+        const yojanas = JSON.parse(localStorage.getItem("yojanas")) || [];
+        const newYojana = { id: yojanas.length + 1, name: yojanaName, details: yojanaDetails, link: yojanaLink };
+        yojanas.push(newYojana);
+        localStorage.setItem("yojanas", JSON.stringify(yojanas));
+
+        addYojanaToTable(newYojana);
+        sendYojanaNotification(yojanaName, yojanaDetails, yojanaLink); // Send SMS
+
+        document.getElementById('yojana-name').value = '';
+        document.getElementById('yojana-details').value = '';
+        document.getElementById('yojana-link').value = '';
+    }
+
+    function sendYojanaNotification(name, details, link) {
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const message = `New Yojana: ${name}\nDetails: ${details}\nMore Info: ${link}`;
+
+        users.forEach(user => {
+            sendSMS(user.phone, message);
+        });
+    }
+
+    async function sendSMS(phone, message) {
+    const url = "https://www.fast2sms.com/dev/bulkV2";
+    
+    const data = new URLSearchParams();
+    data.append("authorization", "YOUR_API_KEY");  // Replace with your actual API key
+    data.append("route", "q");
+    data.append("sender_id", "TXTIND");
+    data.append("message", message);
+    data.append("language", "english");
+    data.append("numbers", phone);
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: data
+        });
+
+        const result = await response.json();
+        console.log(`SMS Response:`, result);
+        
+        if (result.return) {
+            alert(`SMS sent successfully to ${phone}`);
+        } else {
+            alert(`Failed to send SMS: ${result.message}`);
+        }
+    } catch (error) {
+        console.error(`Failed to send SMS to ${phone}:`, error);
+        alert(`Error sending SMS: ${error.message}`);
+    }
+}
+function addYojanaToTable(yojana) {
+    const yojanaTable = document.getElementById('yojana-table').getElementsByTagName('tbody')[0];
+    const newRow = yojanaTable.insertRow();
+    newRow.innerHTML = `
+        <td>${yojana.id}</td>
+        <td>${yojana.name}</td>
+        <td>${yojana.details}</td>
+        <td><a href="${yojana.link}" class="btn btn-primary" target="_blank">View</a></td>
+        <td>
+            <button class="btn btn-danger" onclick="deleteYojana(this, ${yojana.id})">Delete</button>
+        </td>
+    `;
+}
+
+function deleteYojana(button, id) {
+    if (!confirm("Are you sure you want to delete this Yojana?")) return;
+
+    let yojanas = JSON.parse(localStorage.getItem("yojanas")) || [];
+    yojanas = yojanas.filter(y => y.id !== id);
+    localStorage.setItem("yojanas", JSON.stringify(yojanas));
+
+    const row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+    </script>
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-4">
+        <h1>Admin User & Yojana Management</h1>
+    </header>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">  
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="index.html">Logout</a>  
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <main class="container mt-4">
+        <section id="users" class="mb-5">
+            <h2>Manage Users</h2>
+            <form id="add-user-form" class="mb-4" onsubmit="addUser(event)">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="user-name">Name:</label>
+                        <input type="text" class="form-control" id="user-name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="user-phone">Phone Number:</label>
+                        <input type="text" class="form-control" id="user-phone" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </form>
+            <table class="table table-striped" id="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Call</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section id="yojana">
+            <h2>Manage Yojanas</h2>
+            <form id="add-yojana-form" class="mb-4" onsubmit="addYojana(event)">
+                <div class="form-group">
+                    <label for="yojana-name">Yojana Name:</label>
+                    <input type="text" class="form-control" id="yojana-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="yojana-details">Details:</label>
+                    <textarea class="form-control" id="yojana-details" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="yojana-link">Yojana Link:</label>
+                    <input type="text" class="form-control" id="yojana-link">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Yojana</button>
+            </form>
+            <table class="table table-striped" id="yojana-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Yojana Name</th>
+                        <th>Details</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

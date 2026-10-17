@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login </title>
+    <link href="bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminlogin-bg">
+        <div class="adminlogin-overlay"></div>
+        <div class="adminlogin-wrapper">
+            <section class="adminlogin-card">
+                <div class="adminlogin-left-panel">
+                    <div class="left-panel-top">
+                        <img src="images/karnataka-emblem-mark.jpeg" class="government-logo" alt="Karnataka Government emblem">
+                    </div>
+                    <div class="left-panel-content">
+                       
+                        <p class="panel-title"></p>
+                        <div class="divider-gold"></div>
+                        <div class="panel-copy">
+                            <p>Digital India – Strong Panchayat</p>
+                            <p>Strong India</p>
+                        </div>
+                    </div>
+                    <div class="left-panel-footer">
+                        <div class="panchayat-icon"><i class="fa-solid fa-landmark"></i></div>
+                    </div>
+                </div>
+                <div class="adminlogin-right-panel">
+                    <div class="adminlogin-form-card">
+                        <div class="form-header text-center">
+                            <div class="admin-icon-circle"><i class="fa-solid fa-user-shield"></i></div>
+                            <h2>Admin Login</h2>
+                            <p>Please login to access the admin dashboard</p>
+                        </div>
+                        <form id="loginForm" class="adminlogin-form" novalidate>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                <input type="text" id="username" class="form-control" placeholder="Username" aria-label="Username" required>
+                            </div>
+                            <div class="input-group mb-3 password-group">
+                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="password" class="form-control" placeholder="Password" aria-label="Password" required>
+                                <button type="button" class="btn password-toggle" id="togglePassword" aria-label="Show or hide password"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4 form-extras">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                                </div>
+                                <a href="#" class="forgot-link">Forgot Password?</a>
+                            </div>
+                            <div id="loginMessage" class="login-message"></div>
+                            <button type="submit" class="btn btn-login w-100">Login</button>
+                            <div class="adminlogin-or"><span>OR</span></div>
+                            <button type="button" class="btn btn-back w-100" onclick="window.location.href='index.html'">Back to Home</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="adminlogin-footer"><i class="fa-solid fa-shield-alt me-2"></i>Secure Login | Authorized Access Only</footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginMessage = document.getElementById('loginMessage');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginMessage.textContent = '';
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            if (!username || !password) {
+                loginMessage.textContent = 'Both fields are required.';
+                return;
+            }
+            const adminCredentials = { username: 'admin', password: '12345' };
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                loginMessage.style.color = '#1f7d35';
+                loginMessage.textContent = 'Login successful. Redirecting...';
+                localStorage.setItem('gpAdminLoggedIn', 'true');
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1100);
+            } else {
+                loginMessage.style.color = '#b52c2c';
+                loginMessage.textContent = 'Invalid username or password.';
+            }
+        });
+    </script>
+</body>
+</html>

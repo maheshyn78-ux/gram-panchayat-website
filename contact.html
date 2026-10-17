@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Gram Panchayat Rural Empowerment</title>
+    <link href="bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>Gram Panchayat Rural Empowerment</h1>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Empowerment</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="adminlogin.html">Admin Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="initiatives.html">Initiatives</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="display-4">Contact Us</h2>
+                    <p class="lead">Get in touch with us for any queries, complaints, or assistance. We're here to serve our community.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Contact Information -->
+                <div class="col-lg-4">
+                    <div class="contact-card">
+                        <h4 class="mb-4">Office Information</h4>
+
+                        <div class="mb-3">
+                            <i class="fas fa-map-marker-alt contact-icon"></i>
+                            <h6>Gram Panchayat Office</h6>
+                            <p>Main Road, Village Center<br>
+                            District: [Your District]<br>
+                            State: [Your State]<br>
+                            PIN: 123456</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <i class="fas fa-clock contact-icon"></i>
+                            <h6>Office Hours</h6>
+                            <p>Monday - Friday: 9:00 AM - 5:00 PM<br>
+                            Saturday: 9:00 AM - 1:00 PM<br>
+                            Sunday: Closed<br>
+                            Public Holidays: Closed</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <i class="fas fa-phone contact-icon"></i>
+                            <h6>Phone Numbers</h6>
+                            <p>Main Office: +91-12345-67890<br>
+                            Emergency: +91-98765-43210<br>
+                            Fax: +91-12345-67891</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <i class="fas fa-envelope contact-icon"></i>
+                            <h6>Email</h6>
+                            <p>info@grampanchayat.org<br>
+                            complaints@grampanchayat.org<br>
+                            secretary@grampanchayat.org</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="col-lg-8">
+                    <div class="contact-card">
+                        <h4 class="mb-4">Send us a Message</h4>
+                        <form class="contact-form" id="contactForm">
+                            <div id="contactAlert"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label">Subject *</label>
+                                    <select class="form-control" id="subject" required>
+                                        <option value="">Select Subject</option>
+                                        <option value="certificate">Certificate Services</option>
+                                        <option value="complaint">Complaint/Grievance</option>
+                                        <option value="service">Service Request</option>
+                                        <option value="information">General Information</option>
+                                        <option value="feedback">Feedback/Suggestion</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" rows="2" placeholder="Your address (optional)"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" rows="5" required placeholder="Please describe your query or concern in detail..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="urgent">
+                                    <label class="form-check-label" for="urgent">
+                                        This is an urgent matter requiring immediate attention
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contacts -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4 class="mb-4 text-center">Emergency Contacts</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="emergency-card">
+                        <i class="fas fa-ambulance fa-2x mb-3"></i>
+                        <h5>Medical Emergency</h5>
+                        <p>
+                            <a href="tel:108" aria-label="Call Ambulance 108">108</a> - Ambulance Service<br>
+                            <a href="tel:102" aria-label="Call Health Helpline 102">102</a> - Health Helpline
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="emergency-card">
+                        <i class="fas fa-fire fa-2x mb-3"></i>
+                        <h5>Fire Emergency</h5>
+                        <p>
+                            <a href="tel:101" aria-label="Call Fire Brigade 101">101</a> - Fire Brigade<br>
+                            Available 24/7
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="emergency-card">
+                        <i class="fas fa-shield-alt fa-2x mb-3"></i>
+                        <h5>Police Emergency</h5>
+                        <p>
+                            <a href="tel:100" aria-label="Call Police Control Room 100">100</a> - Police Control Room<br>
+                            <a href="tel:112" aria-label="Call Women Helpline 112">112</a> - Women Helpline
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="contact-card">
+                        <h4 class="mb-4">Our Location</h4>
+                        <div class="map-responsive" aria-hidden="false">
+                            <iframe
+                                title="Mandya Smart Head Office (Temporary)"
+                                src="https://maps.google.com/maps?q=Mandya%20Smart%20Head%20Office%2012.5244,76.8957&z=15&output=embed"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <p class="text-muted mt-2 small"><strong>Note:</strong> Marker shows a temporary/placeholder location labeled "Mandya Smart Head Office" for demonstration purposes only.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Gram Panchayat Rural Empowerment. All Rights Reserved. <a href="#" class="text-warning">Privacy Policy</a></p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const contactAlert = document.getElementById('contactAlert');
+
+        function showAlert(message, type = 'success') {
+            contactAlert.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+        }
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                subject: document.getElementById('subject').value,
+                address: document.getElementById('address').value.trim(),
+                message: document.getElementById('message').value.trim(),
+                urgent: document.getElementById('urgent').checked,
+            };
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Unable to send message.');
+                }
+
+                showAlert(data.message, 'success');
+                contactForm.reset();
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+            }
+        });
+    </script>
+</body>
+</html>

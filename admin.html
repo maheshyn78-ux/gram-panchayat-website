@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login </title>
+    <link href="bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #1c6f2d;
+            --primary-green-dark: #11471d;
+            --accent-gold: #d4af37;
+            --glass-white: rgba(255, 255, 255, 0.92);
+            --text-dark: #1f2a1d;
+            --text-muted: #606c5f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background: #071605;
+        }
+
+        .admin-bg {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(to bottom right, rgba(4, 25, 11, 0.78), rgba(8, 39, 17, 0.92)), url('images/index_hero_2000x1200.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        .admin-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(4, 22, 10, 0.5);
+            pointer-events: none;
+        }
+
+        .admin-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .admin-card {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            gap: 1.75rem;
+            border-radius: 32px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 35px 90px rgba(0, 0, 0, 0.28);
+            animation: slideUp 0.9s ease both;
+        }
+
+        .admin-panel {
+            padding: 3rem 2.5rem;
+            background: rgba(21, 79, 37, 0.96);
+            color: #f0f6ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.25rem;
+        }
+
+        .admin-panel .hero {
+            position: relative;
+            padding: 1rem 0 0.5rem 0;
+        }
+        .admin-panel .hero-logo {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06);
+            object-fit: cover;
+            padding: 0;
+        }
+        .admin-panel .hero-title {
+            text-align: center;
+            font-size: 3.6rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            margin: 0.8rem 0 0.25rem 0;
+            color: rgba(255, 246, 234, 0.95);
+            text-shadow: 0 6px 14px rgba(6,22,10,0.45);
+        }
+        .admin-panel .hero-note {
+            text-align: center;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+            opacity: 0.95;
+        }
+
+        .brand-logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+            display: grid;
+            place-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .brand-logo img {
+            width: 56px;
+            height: auto;
+        }
+
+        .admin-panel h1 {
+            margin: 0;
+            font-size: clamp(2rem, 2.8vw, 2.55rem);
+            letter-spacing: 0.05em;
+        }
+
+        .admin-panel .admin-tag {
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin: 0;
+            color: #d8d8c8;
+            font-size: 0.95rem;
+        }
+
+        .admin-panel .admin-text {
+            margin-top: 0.5rem;
+            color: rgba(255, 255, 255, 0.78);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .admin-divider {
+            width: 80px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--accent-gold);
+            margin: 0.85rem 0;
+        }
+
+        .panel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #f1f4df;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .panel-badge i {
+            color: var(--accent-gold);
+        }
+
+        .admin-form-wrap {
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .admin-form-wrap h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3vw, 2.4rem);
+            color: var(--primary-green-dark);
+        }
+
+        .admin-form-wrap p {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.75;
+            font-size: 1rem;
+        }
+
+        .form-floating .form-control,
+        .form-control {
+            border-radius: 20px;
+            padding: 1rem 1.1rem;
+            border: 1px solid rgba(110, 158, 95, 0.25);
+            background: #fff;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.2rem rgba(28, 111, 45, 0.16);
+        }
+
+        .input-group-text,
+        .btn-password-toggle {
+            border-radius: 20px;
+            border: 1px solid rgba(110, 158, 95, 0.25);
+        }
+
+        .input-group-text {
+            background: rgba(28, 111, 45, 0.08);
+            color: var(--primary-green);
+            min-width: 3.8rem;
+            justify-content: center;
+        }
+
+        .btn-password-toggle {
+            border-radius: 0 20px 20px 0;
+            background: #fff;
+            color: var(--primary-green);
+            min-width: 3.8rem;
+            border-left: 0;
+        }
+
+        .btn-password-toggle:hover {
+            background: #f4f9f1;
+        }
+
+        .form-check-label,
+        .forgot-link {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .forgot-link:hover {
+            color: var(--primary-green-dark);
+            text-decoration: none;
+        }
+
+        .btn-login,
+        .btn-back {
+            border-radius: 999px;
+            font-weight: 600;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn-login {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            color: #fff;
+            box-shadow: 0 18px 40px rgba(28, 111, 45, 0.25);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            background: #195d27;
+            border-color: #195d27;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-green-dark);
+            border-color: rgba(28, 111, 45, 0.22);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            background: #f7fcf7;
+        }
+
+        .validation-message {
+            min-height: 1.3rem;
+            color: #b52c2c;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 1.25rem 1rem 1.75rem;
+            color: rgba(255, 255, 255, 0.78);
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(32px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 991.98px) {
+            .admin-card { grid-template-columns: 1fr; }
+            .admin-panel, .admin-form-wrap { padding: 2.2rem 1.8rem; }
+        }
+
+        @media (max-width: 767.98px) {
+            .admin-content { padding: 1.2rem; }
+            .admin-card { border-radius: 26px; }
+            .admin-panel { display: none; }
+            .admin-form-wrap { padding: 1.8rem 1.2rem; }
+            .btn-login, .btn-back { font-size: 0.98rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-bg">
+        <div class="admin-content">
+            <div class="admin-card">
+                <div class="admin-panel">
+                    <div class="hero">
+                        <img src="images/karnataka-emblem-mark.jpeg" alt="Karnataka Government emblem" class="hero-logo" />
+                        <div class="hero-title">SMART MANDYA</div>
+                        <p class="hero-note">Karnataka Government Official Emblem</p>
+                    </div>
+                    <p class="admin-tag">Gram Panchayat Admin</p>
+                    <div class="admin-divider"></div>
+                    <p class="admin-text">Government of Karnataka<br>Delivering premium gram panchayat service access with transparency and trust.</p>
+                    <div class="panel-badge"><i class="fa-solid fa-shield-halved"></i> Premium Government Access</div>
+                </div>
+                <div class="admin-form-wrap">
+                    <div>
+                        <div class="text-center mb-3">
+                            <div class="admin-icon-circle"><i class="fa-solid fa-user-shield"></i></div>
+                        </div>
+                    <h2>Admin Login</h2>
+                    <p>Please login to access the Admin Dashboard</p>
+                    </div>
+                    <form id="adminLoginForm" novalidate>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="username" class="form-control" placeholder="Username" aria-label="Username" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="password" class="form-control" placeholder="Password" aria-label="Password" required>
+                            <button type="button" class="btn btn-password-toggle" id="togglePassword" aria-label="Toggle password visibility"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Remember Me</label>
+                            </div>
+                            <a href="#" class="forgot-link">Forgot Password?</a>
+                        </div>
+                        <div id="validationMessage" class="validation-message"></div>
+                        <button type="submit" class="btn btn-login btn-lg w-100 mb-3"><i class="fa-solid fa-lock me-2"></i>Login</button>
+                        <button type="button" onclick="window.location.href='index.html'" class="btn btn-back btn-lg w-100"><i class="fa-solid fa-arrow-left me-2"></i>Back to Home</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="admin-footer">Secure Login | Authorized Access Only</footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const loginForm = document.getElementById('adminLoginForm');
+        const validationMessage = document.getElementById('validationMessage');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePasswordBtn.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            validationMessage.textContent = '';
+            const username = document.getElementById('username').value.trim();
+            const password = passwordInput.value.trim();
+            if (!username || !password) {
+                validationMessage.textContent = 'Please enter both username and password.';
+                return;
+            }
+            const adminCredentials = { username: 'admin', password: '12345' };
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                validationMessage.style.color = '#1f8128';
+                validationMessage.textContent = 'Login successful! Redirecting...';
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1100);
+            } else {
+                validationMessage.style.color = '#b52c2c';
+                validationMessage.textContent = 'Invalid username or password.';
+            }
+        });
+    </script>
+</body>
+</html>

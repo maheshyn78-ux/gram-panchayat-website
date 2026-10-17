@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1786373422705,
+    "username": "darshu",
+    "password": "0831",
+    "phone": "9591987704",
+    "createdAt": "2026-08-10T14:50:22.705Z"
+  },
+  {
+    "id": 1786421752660,
+    "username": "harish",
+    "password": "hari",
+    "phone": "7892166114",
+    "createdAt": "2026-08-11T04:15:52.660Z"
+  },
+  {
+    "id": 1788532781934,
+    "username": "darshu12",
+    "password": "1234",
+    "phone": "956748396",
+    "createdAt": "2026-09-04T14:39:41.934Z"
+  },
+  {
+    "id": 1788532838781,
+    "username": "teju",
+    "password": "teju",
+    "phone": "956748396",
+    "createdAt": "2026-09-04T14:40:38.781Z"
+  },
+  {
+    "id": 1788706767795,
+    "username": "Preetham",
+    "password": "961163",
+    "phone": "9611638212",
+    "createdAt": "2026-09-06T14:59:27.795Z"
+  },
+  {
+    "id": 1789635163890,
+    "username": "Nithisha",
+    "password": "Nithi",
+    "phone": "8618881070",
+    "createdAt": "2026-09-17T08:52:43.890Z"
+  }
+]
